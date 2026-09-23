@@ -10,12 +10,13 @@ class VariacaoInline(admin.TabularInline):
 
 @admin.register(Produto)
 class ProdutoAdmin(admin.ModelAdmin):
+    
     list_display = (
         'id',
         'nome',
         'tipo',
-        'preco_marketing',
-        'preco_marketing_promocional',
+        'get_preco_formatado',
+        'get_preco_promo_formatado',
     )
 
     list_display_links = (
@@ -31,10 +32,6 @@ class ProdutoAdmin(admin.ModelAdmin):
         'nome',
         'descricao_curta',
     )
-
-    prepopulated_fields = {
-        'slug': ('nome',),
-    }
 
     inlines = [
         VariacaoInline,

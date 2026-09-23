@@ -1,5 +1,6 @@
 from django.db import models
 from utils.image import resize_image
+from utils.rands import slugify_new
 
 # Create your models here.
 class Produto(models.Model):
@@ -7,17 +8,31 @@ class Produto(models.Model):
     descricao_curta = models.TextField(max_length=255)
     descricao_longa = models.TextField()
     imagem = models.ImageField(upload_to='products/%Y/%m/',blank=True,null=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=True,blank=True)
     preco_marketing = models.FloatField()
     preco_marketing_promocional = models.FloatField(default=0)
     tipo = models.CharField(
         default='V',
         max_length=1,
-        choices=(('V','Variação'),('S','Simples'))
+        choices=(('V','Variável'),('S','Simples'))
     )
+    def get_preco_formatado(self):
+        return f'R$ {self.preco_marketing:.2f}'.replace('.', ',')
+    get_preco_formatado.short_description = 'Preço'
+    def get_preco_promo_formatado(self):
+        return f'R$ {self.preco_marketing_promocional:.2f}'.replace('.', ',')
+    get_preco_promo_formatado.short_description = 'Preço Promo'
 
-    def save(self,*args,**kwargs):
-        super().save(*args,**kwargs)
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify_new(self.nome)
+
+        while Produto.objects.filter(
+            slug=self.slug
+            ).exclude(pk=self.pk).exists():
+            self.slug = slugify_new(self.nome)
+
+        super().save(*args, **kwargs)
 
         if self.imagem:
             resize_image(self.imagem)

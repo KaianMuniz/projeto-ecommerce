@@ -1,0 +1,18 @@
+{% load static %}
+<html lang="en">
+
+<head>
+    {% include "partials/_head.html" %}
+    <title>{% block titulo %}Hello, world!{% endblock  %}</title>
+</head>
+
+<body>
+    <main class="container mt-4 mb-4">
+        {% include "partials/_nav.html" %}
+        {% block content %}{% endblock content %}
+    </main>
+
+    {% include "partials/_footer.html" %}
+
+</body>
+</html>

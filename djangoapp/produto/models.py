@@ -2,6 +2,7 @@ from django.db import models
 from utils.image import resize_image
 from utils.rands import slugify_new
 
+
 # Create your models here.
 class Produto(models.Model):
     nome = models.CharField(max_length=255)
@@ -16,12 +17,7 @@ class Produto(models.Model):
         max_length=1,
         choices=(('V','Variável'),('S','Simples'))
     )
-    def get_preco_formatado(self):
-        return f'R$ {self.preco_marketing:.2f}'.replace('.', ',')
-    get_preco_formatado.short_description = 'Preço'
-    def get_preco_promo_formatado(self):
-        return f'R$ {self.preco_marketing_promocional:.2f}'.replace('.', ',')
-    get_preco_promo_formatado.short_description = 'Preço Promo'
+    
 
     def save(self, *args, **kwargs):
         if not self.slug:
@@ -46,6 +42,7 @@ class Variacao(models.Model):
     preco = models.FloatField()
     preco_promocional = models.FloatField(default=0)
     estoque = models.PositiveIntegerField(default=1)
+
 
     class Meta:
         verbose_name = 'Variação'

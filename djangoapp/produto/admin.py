@@ -15,8 +15,8 @@ class ProdutoAdmin(admin.ModelAdmin):
         'id',
         'nome',
         'tipo',
-        'get_preco_formatado',
-        'get_preco_promo_formatado',
+        'preco_marketing',
+        'preco_marketing_promocional',
     )
 
     list_display_links = (

@@ -1,25 +1,45 @@
 (function () {
-    select_variacao = document.getElementById('select-variacoes');
-    variation_preco = document.getElementById('variation-preco');
-    variation_preco_promocional = document.getElementById('variation-preco-promocional');
+    const select_variacao = document.getElementById('select-variacoes');
+    const variation_preco = document.getElementById('variation-preco');
+    const variation_preco_promocional = document.getElementById(
+        'variation-preco-promocional'
+    );
 
-    if (!select_variacao) {
-        return;
-    }
-
-    if (!variation_preco) {
+    if (!select_variacao || !variation_preco || !variation_preco_promocional) {
         return;
     }
 
     select_variacao.addEventListener('change', function () {
-        preco = this.options[this.selectedIndex].getAttribute('data-preco');
-        preco_promocional = this.options[this.selectedIndex].getAttribute('data-preco-promocional');
+        const preco = this.options[this.selectedIndex]
+            .getAttribute('data-preco');
 
-        variation_preco.innerHTML = preco;
-
-        if (variation_preco_promocional) {
+        const preco_promocional = this.options[this.selectedIndex]
+            .getAttribute('data-preco-promocional');
+            
+        console.log('Preço:', preco);
+        console.log('Promoção:', preco_promocional);
+        
+        if (preco_promocional) {
+            variation_preco.innerHTML = preco;
             variation_preco_promocional.innerHTML = preco_promocional;
-        }
-    })
-})();
 
+            variation_preco.classList.add('product-old-price', 'text-muted');
+            variation_preco.classList.remove('product-price');
+
+            variation_preco_promocional.classList.add('product-price');
+            variation_preco_promocional.classList.remove(
+                'product-old-price',
+                'text-muted'
+            );
+
+            variation_preco_promocional.hidden = false;
+        } else {
+            variation_preco.innerHTML = preco;
+
+            variation_preco.classList.add('product-price');
+            variation_preco.classList.remove('product-old-price', 'text-muted');
+
+            variation_preco_promocional.hidden = true;
+        }
+    });
+})();

@@ -1,7 +1,7 @@
 from django.db import models
 from utils.image import resize_image
 from utils.rands import slugify_new
-
+from django.core.exceptions import ValidationError
 
 # Create your models here.
 class Produto(models.Model):
@@ -10,8 +10,6 @@ class Produto(models.Model):
     descricao_longa = models.TextField()
     imagem = models.ImageField(upload_to='products/%Y/%m/',blank=True,null=True)
     slug = models.SlugField(unique=True,blank=True)
-    preco_marketing = models.FloatField()
-    preco_marketing_promocional = models.FloatField(default=0)
     tipo = models.CharField(
         default='V',
         max_length=1,
@@ -48,6 +46,7 @@ class Variacao(models.Model):
         verbose_name = 'Variação'
         verbose_name_plural = 'Variações'
 
+            
     def __str__(self):
         return self.nome or self.produto.nome
     

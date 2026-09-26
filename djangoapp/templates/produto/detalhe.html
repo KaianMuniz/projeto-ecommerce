@@ -39,7 +39,7 @@
                     </p>
                     
 
-                    <form action="/addtocart/" id="form-add-to-cart">
+                    <form action="{% url "produto:adicionarproduto" %}" id="form-add-to-cart">
                         <div class="form-group">
                         {% if produto.variacao_set.exists %}
                             <select id="select-variacoes" name="vid" class="form-control form-control-lg">
